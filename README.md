@@ -2,4 +2,9 @@ Django Seed
 
 ====
 
-Docker && Nginx && Uwsgi && supervisord && log
+- Docker
+- Nginx
+- Uwsgi
+- supervisord
+- log
+- Social Auth

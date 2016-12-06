@@ -1,32 +1,28 @@
 from django.contrib.auth.models import PermissionsMixin, AbstractBaseUser, BaseUserManager
 from django.db import models
 
+from utils.utils import get_random_string
+
 
 class UserManager(BaseUserManager):
-    def _create_user(self, username, email, password, is_superuser=False, **extra_fields):
+    def _create_user(self, username, email, password=None, is_superuser=False, **extra_fields):
         """
         Creates and saves a User with the given email and password.
         """
         email = self.normalize_email(email)
         user = self.model(username=username, email=email, is_superuser=is_superuser, **extra_fields)
+        if not password:
+            password = get_random_string(length=10)
         user.set_password(password)
         user.save(using=self._db)
         return user
 
-    def create_user(self, username, email, password, **extra_fields):
+    def create_user(self, username, email, password=None, **extra_fields):
         return self._create_user(username=username, email=email, password=password, **extra_fields)
-
-    def create_activate_user(self, username, email, password, **extra_fields):
-        return self._create_user(username=username, email=email,
-                                 password=password, is_active=True, **extra_fields)
 
     def create_superuser(self, username, email, password, **extra_fields):
         return self._create_user(username=username, email=email, password=password
-                                 , is_superuser=True, is_staff=True, is_active=True, **extra_fields)
-
-    def create_staff(self, username, email, password, **extra_fields):
-        return self._create_user(username=username, email=email, password=password
-                                 , is_superuser=False, is_staff=True, is_active=True, **extra_fields)
+                                 , is_superuser=True, **extra_fields)
 
 
 # 创建了自定义的User,也必须要创建自定义的UserManager
@@ -34,15 +30,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField('注册邮箱', unique=True, db_index=True)
     username = models.CharField('昵称', max_length=255, null=True, blank=True)
 
-    school = models.CharField('目前的学校', max_length=255, null=True, blank=True)
     sex = models.BooleanField('性别', choices=((False, '男'), (True, '女')), default=False)
-    birthday = models.DateField('生日', null=True, blank=True)
-
-    score = models.IntegerField('积分', default=0)
-
-    is_staff = models.BooleanField('管理员', default=False)
-
-    is_active = models.BooleanField('邮箱激活', default=False)
 
     avatar = models.URLField('头像', max_length=255, null=True, blank=True)
 

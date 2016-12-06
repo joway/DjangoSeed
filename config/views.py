@@ -3,5 +3,5 @@ from django.shortcuts import render, redirect
 
 
 def index(request):
-    return redirect('/')
+    return render(request, 'social.html', locals())
 

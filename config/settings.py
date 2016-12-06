@@ -52,6 +52,7 @@ INSTALLED_APPS = (
     # third part
     'rest_framework',
     'django_mobile',
+    'social.apps.django_app.default',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -82,6 +83,10 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'django_mobile.context_processors.flavour',
+
+                # social
+                'social.apps.django_app.context_processors.backends',
+                'social.apps.django_app.context_processors.login_redirect',
             ],
             'loaders': [
                 'django_mobile.loader.Loader',
@@ -193,3 +198,10 @@ REST_FRAMEWORK = {
 
 USE_X_FORWARDED_HOST = True
 
+# social
+AUTHENTICATION_BACKENDS = (
+    'social.backends.github.GithubOAuth2',
+    'django.contrib.auth.backends.ModelBackend',
+)
+SOCIAL_AUTH_GITHUB_KEY = '497500e1266c7f2a4a42'
+SOCIAL_AUTH_GITHUB_SECRET = 'd2e0c20abd1bd1683b2dab2d05b4d509ba23ec3a'

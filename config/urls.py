@@ -8,6 +8,7 @@ admin.autodiscover()
 
 urlpatterns = [
     url(r'^$', views.index),
+    url(r'^social/', include('social.apps.django_app.urls', namespace='social')),
     url(r'^admin/', include(admin.site.urls)),
     url(r"^user/", include('users.urls')),
     url(r"^api/", include(router.urls)),
